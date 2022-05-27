@@ -1,26 +1,69 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="chart_div"></div>
 </template>
-
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+/* eslint-disable */
+
+
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+
+  },
+
+  data() {
+    return {
+       data : null
+    }
+  },
+
+  created() {
+    google.charts.load('current', { packages: ['corechart', 'bar'] });
+    google.charts.setOnLoadCallback(this.drawBasic);
+  },
+  methods: {
+    drawBasic() {
+
+      this.data = new google.visualization.DataTable();
+      this.data.addColumn('timeofday', 'Time of Day');
+      this.data.addColumn('number', 'Motivation Level');
+      this.data.addRows([
+        [{ v: [8, 0, 0], f: '8 am' }, 1],
+        [{ v: [9, 0, 0], f: '9 am' }, 2],
+        [{ v: [10, 0, 0], f: '10 am' }, 3],
+        [{ v: [11, 0, 0], f: '11 am' }, 4],
+        [{ v: [12, 0, 0], f: '12 pm' }, 5],
+        [{ v: [13, 0, 0], f: '1 pm' }, 6],
+        [{ v: [14, 0, 0], f: '2 pm' }, 7],
+        [{ v: [15, 0, 0], f: '3 pm' }, 8],
+        [{ v: [16, 0, 0], f: '4 pm' }, 9],
+        [{ v: [17, 0, 0], f: '5 pm' }, 10],
+      ]);
+
+      var options = {
+        title: 'Motivation Level Throughout the Day',
+        hAxis: {
+          title: 'Time of Day',
+          format: 'h:mm a',
+          viewWindow: {
+            min: [7, 30, 0],
+            max: [17, 30, 0]
+          }
+        },
+        vAxis: {
+          title: 'Rating (scale of 1-10)'
+        }
+      };
+
+      var chart = new google.visualization.ColumnChart(
+        document.getElementById('chart_div'));
+
+      chart.draw(this.data, options);
+    }
   }
 }
-</script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+
+
+</script>
